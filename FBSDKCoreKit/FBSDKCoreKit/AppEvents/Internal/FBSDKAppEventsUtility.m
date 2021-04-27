@@ -18,7 +18,9 @@
 
 #import "FBSDKAppEventsUtility.h"
 
+#ifdef FB_ADSUPPORT
 #import <AdSupport/AdSupport.h>
+#endif
 
 #import <objc/runtime.h>
 
@@ -40,7 +42,9 @@
 #define FBSDK_APPEVENTSUTILITY_MAX_IDENTIFIER_LENGTH 40
 
 static NSArray<NSString *> *standardEvents;
+#ifdef FB_ADSUPPORT
 static ASIdentifierManager *_cachedAdvertiserIdentifierManager;
+#endif
 
 @implementation FBSDKAppEventsUtility
 
@@ -100,10 +104,14 @@ static ASIdentifierManager *_cachedAdvertiserIdentifierManager;
 
   [FBSDKTypeUtility dictionary:parameters setObject:[FBSDKBasicUtility anonymousID] forKey:FBSDK_APPEVENTSUTILITY_ANONYMOUSID_KEY];
 
+#ifdef FB_ADSUPPORT
   FBSDKAdvertisingTrackingStatus advertisingTrackingStatus = [FBSDKSettings advertisingTrackingStatus];
   if (advertisingTrackingStatus != FBSDKAdvertisingTrackingUnspecified) {
     [FBSDKTypeUtility dictionary:parameters setObject:@([FBSDKSettings isAdvertiserTrackingEnabled]).stringValue forKey:@"advertiser_tracking_enabled"];
   }
+#else
+  [FBSDKTypeUtility dictionary:parameters setObject:@(false) forKey:@"advertiser_tracking_enabled"];
+#endif
 
   NSString *userData = [FBSDKAppEvents getUserData];
   if (userData) {
@@ -111,7 +119,11 @@ static ASIdentifierManager *_cachedAdvertiserIdentifierManager;
   }
 
   [FBSDKTypeUtility dictionary:parameters setObject:@(!FBSDKSettings.limitEventAndDataUsage).stringValue forKey:@"application_tracking_enabled"];
+#ifdef FB_ADSUPPORT
   [FBSDKTypeUtility dictionary:parameters setObject:@(FBSDKSettings.advertiserIDCollectionEnabled).stringValue forKey:@"advertiser_id_collection_enabled"];
+#else
+  [FBSDKTypeUtility dictionary:parameters setObject:@(false) forKey:@"advertiser_id_collection_enabled"];
+#endif
 
   NSString *userID = [FBSDKAppEvents userID];
   if (userID) {
@@ -158,6 +170,7 @@ static ASIdentifierManager *_cachedAdvertiserIdentifierManager;
   return parameters;
 }
 
+#ifdef FB_ADSUPPORT
 - (NSString *)advertiserID
 {
   BOOL shouldUseCachedManagerIfAvailable = [FBSDKSettings shouldUseCachedValuesForExpensiveMetadata];
@@ -200,6 +213,7 @@ static ASIdentifierManager *_cachedAdvertiserIdentifierManager;
   }
   return manager;
 }
+#endif
 
 + (BOOL)isStandardEvent:(nullable NSString *)event
 {
@@ -472,7 +486,7 @@ static ASIdentifierManager *_cachedAdvertiserIdentifierManager;
 
 #if DEBUG
  #if FBSDKTEST
-
+#ifdef FB_ADSUPPORT
 + (ASIdentifierManager *)cachedAdvertiserIdentifierManager
 {
   return _cachedAdvertiserIdentifierManager;
@@ -482,6 +496,7 @@ static ASIdentifierManager *_cachedAdvertiserIdentifierManager;
 {
   _cachedAdvertiserIdentifierManager = manager;
 }
+#endif
 
  #endif
 #endif

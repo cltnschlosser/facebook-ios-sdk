@@ -61,9 +61,11 @@ FOUNDATION_EXPORT CATransform3D fbsdkdfl_CATransform3DConcat (CATransform3D a, C
 
 FOUNDATION_EXPORT const CATransform3D fbsdkdfl_CATransform3DIdentity;
 
+#ifdef FB_ADSUPPORT
 #pragma mark - AdSupport Classes
 
 FOUNDATION_EXPORT Class fbsdkdfl_ASIdentifierManagerClass(void);
+#endif
 
 #pragma mark - SafariServices Classes
 

@@ -60,11 +60,13 @@ NS_SWIFT_NAME(jpegCompressionQuality);
  */
 @property (class, nonatomic, assign, getter=isCodelessDebugLogEnabled) BOOL codelessDebugLogEnabled;
 
+#ifdef FB_ADSUPPORT
 /**
  Controls the access to IDFA
  If not explicitly set, the default is true
  */
 @property (class, nonatomic, assign, getter=isAdvertiserIDCollectionEnabled) BOOL advertiserIDCollectionEnabled;
+#endif
 
 /**
  Controls the SKAdNetwork report
@@ -157,6 +159,7 @@ NS_REFINED_FOR_SWIFT;
 */
 @property (class, nonatomic, copy, null_resettable) NSString *graphAPIVersion;
 
+#ifdef FB_ADSUPPORT
 /**
  The value of the flag advertiser_tracking_enabled that controls the advertiser tracking status of the data sent to Facebook
  If not explicitly set in iOS14 or above, the default is false in iOS14 or above.
@@ -170,6 +173,7 @@ Set the advertiser_tracking_enabled flag. It only works in iOS14 and above.
 @return Whether the the value is set successfully. It will always return NO in iOS 13 and below.
  */
 + (BOOL)setAdvertiserTrackingEnabled:(BOOL)advertiserTrackingEnabled;
+#endif
 
 /**
 Set the data processing options.

@@ -18,7 +18,9 @@
 
 #import "FBSDKSettings+Internal.h"
 
+#ifdef FB_ADSUPPORT
 #import <AdSupport/AdSupport.h>
+#endif
 
 #import "FBSDKAccessTokenExpirer.h"
 #import "FBSDKAppEventsConfigurationProtocol.h"
@@ -290,6 +292,7 @@ FBSDKSETTINGS_PLIST_CONFIGURATION_SETTING_IMPL(
   [self.sharedSettings _setAutoLogAppEventsEnabled:@(autoLogAppEventsEnabled)];
 }
 
+#ifdef FB_ADSUPPORT
 + (BOOL)isAdvertiserIDCollectionEnabled
 {
   return self.sharedSettings._advertiserIDCollectionEnabled.boolValue;
@@ -357,6 +360,7 @@ FBSDKSETTINGS_PLIST_CONFIGURATION_SETTING_IMPL(
   self.advertiserTrackingStatusBacking = @(status);
   [self.store setObject:self.advertiserTrackingStatusBacking forKey:FBSDKSettingsAdvertisingTrackingStatus];
 }
+#endif
 
 + (BOOL)isSKAdNetworkReportEnabled
 {
