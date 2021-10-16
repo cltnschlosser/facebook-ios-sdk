@@ -43,6 +43,6 @@ Pod::Spec.new do |s|
       http: "https://github.com/facebook/facebook-ios-sdk/releases/download/v#{s.version}/FacebookSDK_Dynamic.xcframework.zip",
       sha1: '54d558c381dc7c9b180509b4a46a2a881a750e41'
     }
-    s.vendored_frameworks = 'XCFrameworks/FBAEMKit.xcframework'
+    s.vendored_frameworks = 'FacebookSDK-Static_XCFrameworks/FBAEMKit.xcframework'
     s.dependency 'FBSDKCoreKit_Basics', "#{s.version}"
   end
